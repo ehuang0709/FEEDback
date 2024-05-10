@@ -1,4 +1,4 @@
-# # FEEDback
+# FEEDback
 
 FEEDback is a whistleblowing web application aimed at promoting food safety and sanitation by providing the general public with the ability to submit a report, either authenticated or anonymous, regarding food poisoning or concerns about the safety and sanitation of the environment at a restaurant. 
 
