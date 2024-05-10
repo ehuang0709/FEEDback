@@ -57,8 +57,8 @@ SOCIALACCOUNT_PROVIDERS = {
             'access_type': 'online'
         },
         'APP': {
-            'client_id': os.getenv("GOOGLE_CLIENT_ID"),
-            'secret': os.getenv("GOOGLE_SECRET"),
+            'client_id': "342520742622-1ufclv2iu5bmte4iipb3mpa2ji2jdrov.apps.googleusercontent.com",
+            'secret': "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",
             'key': ''
         }
     }
