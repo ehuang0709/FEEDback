@@ -1,0 +1,153 @@
+{% extends "feedback/base.html" %}
+
+{% load socialaccount %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+{% load static %}
+
+{% block content %}
+<style>
+    .resource-header {
+        text-align: center;
+        font-weight: bold;
+        margin-bottom: 50px;
+        color: #062d46;
+    }
+    .card {
+        margin-bottom: 25px;
+    }
+    .card-body {
+        height: 250px; 
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .card-img-top {
+        width: 100%; 
+        height: 175px;
+        object-fit: cover; 
+    }
+    .card-title {
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
+    .card-text {
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+    .card-container {
+        padding-left: 50px;
+        padding-right: 50px; 
+    }
+    .resource-link {
+        margin-top: auto;
+        text-decoration: none;
+        color: #5cb85c;
+        font-weight: bold;
+    }
+    .resource-link:hover {
+        color: #5cb85c; 
+        text-decoration: none; 
+    }
+</style>
+
+<div class="container card-container">
+    <h2 class="resource-header">Resources</h2>
+
+    <!-- resource cards -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
+        <!-- 1 -->
+        <div class="col">
+            <div class="card" style="width: 18rem;">
+                <img src="{% static 'feedback/niddk.avif' %}" class="card-img-top" alt="NIDDK">
+                <div class="card-body">
+                    <h5 class="card-title">NIH NIDDK Food Poisoning</h5>
+                    <p class="card-text">Learn more about food poisoning, including but not limited to the facts, symptoms and causes, diagnosis, treatment, nutrition facts, and clinical trials. </p>
+                    <a class="resource-link" href="https://www.niddk.nih.gov/health-information/digestive-diseases/food-poisoning" target="_blank">niddk.nih.gov</a>
+                </div>
+            </div>
+        </div>
+        <!-- 2 -->
+        <div class="col">
+            <div class="card" style="width: 18rem;">
+                <img src="{% static 'feedback/mayo-clinic.jpg' %}" class="card-img-top" alt="Mayo Clinic">
+                <hr style="margin: 0; color: gray;">
+                <div class="card-body">
+                    <h5 class="card-title">Mayo Clinic Food Poisoning</h5>
+                    <p class="card-text">What should you do when you think you have food poisoning. This also includes information on specific causes, treatments, and complications of food poisoning.</p>
+                    <a class="resource-link" href="https://www.mayoclinic.org/diseases-conditions/food-poisoning/symptoms-causes/syc-20356230" target="_blank">mayoclinic.org</a>
+                </div>
+            </div>
+        </div>
+        <!-- 3 -->
+        <div class="col">
+            <div class="card" style="width: 18rem;">
+                <img src="{% static 'feedback/foodsafety.jpg' %}" class="card-img-top" alt="FoodSafety">
+                <div class="card-body">
+                    <h5 class="card-title">FoodSafety</h5>
+                    <p class="card-text">Your gateway to food safety information. Get the latest news, alerts, and tips on safely handling and storing food to prevent food poisoning.</p>
+                    <a class="resource-link" href="https://www.foodsafety.gov/" target="_blank">foodsafety.gov</a>
+                </div>
+            </div>
+        </div>
+        <!-- 4 -->
+        <div class="col">
+            <div class="card" style="width: 18rem;">
+                <img src="{% static 'feedback/usda.png' %}" class="card-img-top" alt="USDA">
+                <div class="card-body">
+                    <h5 class="card-title">USDA Food Complaint</h5>
+                    <p class="card-text">Report foodborne incidents such as illness, foreign object, injury, allergic reaction, mislabeling, and off taste, color, or appearance involving meat, poultry, and processed egg products regulated by the USDA FSIS.</p>
+                    <a class="resource-link" href="https://foodcomplaint.fsis.usda.gov/eCCF/" target="_blank">foodcomplaint.fsis.usda.gov</a>
+                </div>
+            </div>
+        </div>
+        <!-- 5 -->
+        <div class="col">
+            <div class="card" style="width: 18rem;">
+                <img src="{% static 'feedback/osha.jpg' %}" class="card-img-top" alt="OSHA">
+                <hr style="margin: 0; color: gray;">
+                <div class="card-body">
+                    <h5 class="card-title">Occupational Safety and Health Administration</h5>
+                    <p class="card-text">The Occupational Safety and Health Administration (OSHA) ensures safe and healthful working conditions for workers by setting and enforcing standards and by providing training, outreach, education and assistance.</p>
+                    <a class="resource-link" href="https://www.osha.gov/" target="_blank">osha.gov</a>
+                </div>
+            </div>
+        </div>
+        <!-- 6 -->
+        <div class="col">
+            <div class="card" style="width: 18rem;">
+                <img src="{% static 'feedback/hotline-bg.webp' %}" class="card-img-top" alt="USDA Food Safety">
+                <div class="card-body">
+                    <h5 class="card-title">USDA Food Safety</h5>
+                    <p class="card-text">Consumers, communities, industry and government all work together to prevent foodborne illness. Take steps to ensure your food is safe by learning best practices for how to buy, prepare and store food safely.</p>
+                    <a class="resource-link" href="https://www.fsis.usda.gov/food-safety" target="_blank">fsis.usda.gov</a>
+                </div>
+            </div>
+        </div>
+        <!-- 7 -->
+        <div class="col">
+            <div class="card" style="width: 18rem;">
+                <img src="{% static 'feedback/fda.jpg' %}" class="card-img-top" alt="FDA">
+                <div class="card-body">
+                    <h5 class="card-title">FDA Consumer Resources</h5>
+                    <p class="card-text">FDA provides educational resources related to food safety, including food purchase and preparation, risks of foodborne illness, and many spotlights on food safety.</p>
+                    <a class="resource-link" href="https://www.fda.gov/food/resources-you-food/consumers" target="_blank">fda.gov</a>
+                </div>
+            </div>
+        </div>
+        <!-- 8 -->
+        <div class="col">
+            <div class="card" style="width: 18rem;">
+                <img src="{% static 'feedback/vdh.jpg' %}" class="card-img-top" alt="VDOH">
+                <div class="card-body">
+                    <h5 class="card-title">Food Safety in Virginia</h5>
+                    <p class="card-text">The Virginia Department of Health works with food establishment owners and consumers throughout the Commonwealth to prevent and address foodborne illness. Learn more about food safety services and resources here.</p>
+                    <a class="resource-link" href="https://www.vdh.virginia.gov/environmental-health/food-safety-in-virginia/" target="_blank">vdh.virginia.gov</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

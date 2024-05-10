@@ -1,0 +1,38 @@
+{% extends 'feedback/base.html' %}
+{% load socialaccount %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+{% load static %}
+
+{% block content %}
+<style>
+    .header {
+        font-family: 'Open Sans', sans-serif;
+        font-weight: bold;
+    }
+    .section {
+        font-family: 'Open Sans', sans-serif;
+        font-weight: bold;
+        margin-top: 35px;
+    }
+
+</style>
+<div class="container">
+    <h1 class="header">About Us</h1>
+    <p>This project was initiated by Team A-04 as part of the CS 3240 - Advanced Software Development course at the University of Virginia, during the Spring 2024 semester. The focus of the software system during this semester was a “whistleblowing” web application. With this topic in mind, we wanted to create an application to identify and address concerns relating to food safety and sanitation in restaurants, catered to both employees, customers, and the general public to report concerns and ensure accountability.</p>
+    
+    <h3 class="section">What Did We Do?</h3>
+    <p>For this project, we followed the software development life cycle and the Agile methodology, which involved planning, requirements elicitation, design, development, testing, and deployment. In addition to the core functionality requirements, we gathered requirements from user stories to better define the wishes of potential users and admins of the site. We held weekly scrum sprint meetings with the group’s Teaching Assistant to showcase our progress and results of our work for that sprint. Our dedication to iterative development and user-friendly design ensures that our application meets the expectations of the course instructor, as well as potential users of this application, in promoting sanitation and food safety awareness.</p>
+    
+    <h3 class="section">Meet The Team</h3>
+    <ul>
+        <li>Scrum Master: Tiger Nguyen</li>
+        <li>Requirements Manager: Edison Huang</li>
+        <li>Testing Manager: Jaimin Thakkar</li>
+        <li>DevOps Manager: Max Grant</li>
+        <li>Software Architect: Ishaan Shah</li>
+    </ul>
+</div>
+{% endblock %}

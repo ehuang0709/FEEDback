@@ -1,0 +1,277 @@
+{% extends 'feedback/base.html' %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+{% load static %}
+
+{% block content %}
+    <style>
+        .custom-table-container {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            margin-left: 80px;
+            margin-right: 80px;
+        }
+        .custom-table {
+            width: 100%; 
+            margin: 0 auto; 
+            border-collapse: collapse;
+            border-radius: 5px; 
+            border: 1px solid #ddd; 
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); 
+        }
+        .custom-table th,
+        .custom-table td {
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd; 
+            padding: 8px 12px; 
+            text-align: left;
+            color: #4c4c4e;
+        }
+        .custom-table th {
+            background-color: #f2f2f2; 
+        }
+        .custom-table th:first-child,
+        .custom-table td:first-child {
+            width: 9%; 
+        }
+        .custom-table th:nth-child(2),
+        .custom-table td:nth-child(2) {
+            width: 17%;  
+        }
+        .custom-table th:nth-child(3),
+        .custom-table td:nth-child(3) {
+            width: 19%; 
+        }
+        .custom-table th:nth-child(4),
+        .custom-table td:nth-child(4) {
+            width: 29%; 
+        }
+        .custom-table th:nth-child(5),
+        .custom-table td:nth-child(5) {
+            width: 17%; 
+        }
+        .status-tag {
+            display: inline-block;
+            padding: 5px 10px; 
+            border-radius: 20px; 
+            font-size: 12px; 
+        }
+        .status-new {
+            border: 2px solid #4a9bf5; 
+            color: #4a9bf5; 
+        }
+        .status-in-progress {
+            border: 2px solid #e1a900;
+            color: #e1a900; 
+        }
+        .status-resolved {
+            border: 2px solid #28a745;
+            color: #28a745; 
+        }
+        .view-report-button {
+            padding: 4px 30px;
+            background-color: #edf0ff;
+            color: #72a4fa;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out; 
+        }
+        .view-report-button:hover {
+            color: white;
+            background-color: #6892ff; 
+        }
+        .summary-box {
+            background-color: #4a9bf5;
+            padding-left: 30px;
+            padding-right: 30px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(64, 135, 216, 0.7); 
+        }
+        .summary-box h5 {
+            margin-top: 5px;
+            margin-left: 15px;
+            margin-bottom: -5px;
+            font-size: 25px;
+        }
+        .summary-box p {
+            margin-top: 14px;
+            font-weight: 400;
+        }
+        .summary-link {
+            position: relative;
+            color: white; 
+            text-decoration: none;
+            cursor: pointer; 
+            margin-left: 15px;
+            font-weight: 300;
+            font-size: 12px;
+            transition: text-shadow 0.1s ease-in-out;
+        }
+        .summary-link:hover {
+            color: white;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8); 
+        }
+    </style>
+    <div class="container-fluid">
+        <div class="row custom-table-container">
+            <h1>Overview</h1>
+            <div class="col-md-4 mb-4">
+                <div class="summary-box text-white d-flex align-items-center">
+                    <div>
+                        <p class="display-5 mr-5">{{ new_reports_count }}</p>
+                    </div>
+                    <div>
+                        <h5>New reports</h5>
+                        <a class="summary-link" href="#new-reports-table">Show Reports &rarr;</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="summary-box text-white d-flex align-items-center">
+                    <div>
+                        <p class="display-5 mr-5">{{ in_progress_reports_count }}</p>
+                    </div>
+                    <div>
+                        <h5>Reports in progress</h5>
+                        <a class="summary-link" href="#in-progress-reports-table">Show Reports &rarr;</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="summary-box text-white d-flex align-items-center">
+                    <div>
+                        <p class="display-5 mr-5">{{ resolved_reports_count }}</p>
+                    </div>
+                    <div>
+                        <h5>Resolved reports</h5>
+                        <a class="summary-link" href="#resolved-reports-table">Show Reports &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section id="new-reports-table">
+            <div class="row custom-table-container">
+                <div class="col">
+                    <h3>New</h3>
+                    <div class="mt-4 mb-4">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Date</th>
+                                    <th>User</th>
+                                    <th>Report</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for report in reports %}
+                                    {% if report.status == "New" %}
+                                        <tr>
+                                            <td>{{ report.id }}</td>
+                                            <td>{{ report.date|date:"m/d/Y" }}</td>
+                                            <td>{{ report.user.username }}</td>
+                                            <td>Report for {{ report.restaurant_name }}</a></td>
+                                            <td><span class="status-tag status-new">New</span></td>
+                                            <td class="view-report-button-container">
+                                                <form action="{% url 'report_details' report.id %}" method="get">
+                                                    <button type="submit" class="view-report-button">View</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="in-progress-reports-table">
+            <div class="row custom-table-container">
+                <div class="col">
+                    <h3>In Progress</h3>
+                    <div class="mt-4 mb-4">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Date</th>
+                                    <th>User</th>
+                                    <th>Report</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for report in reports %}
+                                    {% if report.status == "In Progress" %}
+                                        <tr>
+                                            <td>{{ report.id }}</td>
+                                            <td>{{ report.date|date:"m/d/Y" }}</td>
+                                            <td>{{ report.user.username }}</td>
+                                            <td>Report for {{ report.restaurant_name }}</a></td>
+                                            <td><span class="status-tag status-in-progress">In Progress</span></td>
+                                            <td class="view-report-button-container">
+                                                <form action="{% url 'report_details' report.id %}" method="get">
+                                                    <button type="submit" class="view-report-button">View</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="resolved-reports-table">
+            <div class="row custom-table-container">
+                <div class="col">
+                    <h3>Resolved</h3>
+                    <div class="mt-4 mb-4">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Date</th>
+                                    <th>User</th>
+                                    <th>Report</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for report in reports %}
+                                    {% if report.status == "Resolved" %}
+                                        <tr>
+                                            <td>{{ report.id }}</td>
+                                            <td>{{ report.date|date:"m/d/Y" }}</td>
+                                            <td>{{ report.user.username }}</td>
+                                            <td>Report for {{ report.restaurant_name }}</a></td>
+                                            <td><span class="status-tag status-resolved">Resolved</span></td>
+                                            <td class="view-report-button-container">
+                                                <form action="{% url 'report_details' report.id %}" method="get">
+                                                    <button type="submit" class="view-report-button">View</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}

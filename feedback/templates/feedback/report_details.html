@@ -1,0 +1,123 @@
+{% extends 'feedback/base.html' %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h1>Report Details</h1>
+    <form class="needs-validation" method="post" novalidate>
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id_date" class="form-label">Date</label>
+            <input type="date" id="id_date" name="date" class="form-control" value="{{ report.date|date:'Y-m-d' }}" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="id_restaurant_name" class="form-label">Restaurant Name</label>
+            <input type="text" id="id_restaurant_name" name="restaurant_name" class="form-control" value="{{ report.restaurant_name }}" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="id_restaurant_address" class="form-label">Restaurant Address</label>
+            <input type="text" id="id_restaurant_address" name="restaurant_address" class="form-control" value="{{ report.restaurant_address }}" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="id_restaurant_city" class="form-label">Restaurant City</label>
+            <input type="text" id="id_restaurant_city" name="restaurant_city" class="form-control" value="{{ report.restaurant_city }}" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="id_restaurant_state" class="form-label">Restaurant State</label>
+            <input type="text" id="id_restaurant_state" name="restaurant_state" class="form-control" value="{{ report.restaurant_state }}" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="id_restaurant_zip" class="form-label">Restaurant Zip Code</label>
+            <input type="text" id="id_restaurant_zip" name="restaurant_zip" class="form-control" value="{{ report.restaurant_zip }}" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="id_consumption_date_time" class="form-label">When were these food items consumed?</label>
+            <input type="datetime-local" id="id_consumption_date_time" name="consumption_date_time" class="form-control" value="{{ report.consumption_date_time|date:'Y-m-d\TH:i' }}" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="id_symptoms" class="form-label">What symptoms did you experience?</label>
+            <textarea id="id_symptoms" name="symptoms" class="form-control" readonly>{{ report.symptoms }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="id_symptoms_start_date_time" class="form-label">When did the symptoms start?</label>
+            <input type="datetime-local" id="id_symptoms_start_date_time" name="symptoms_start_date_time" class="form-control" value="{{ report.symptoms_start_date_time|date:'Y-m-d\TH:i' }}" readonly>
+        </div>
+        <div class="mb-3 form-check">
+            <input type="checkbox" id="id_symptoms_stopped" name="symptoms_stopped" class="form-check-input" {% if report.symptoms_stopped %}checked{% endif %} disabled>
+            <label for="id_symptoms_stopped" class="form-check-label">Symptoms have stopped</label>
+        </div>
+        <div class="mb-3">
+            <label for="id_suspected_illness_source" class="form-label">What food items do you suspect is the cause of the illness consumed by you during the last 2 days before becoming ill?</label>
+            <textarea id="id_suspected_illness_source" name="suspected_illness_source" class="form-control" readonly>{{ report.suspected_illness_source }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="id_additional_info" class="form-label">Please list any additional information you would like to share with the report.</label>
+            <textarea id="id_additional_info" name="additional_info" class="form-control" readonly>{{ report.additional_info }}</textarea>
+        </div>
+         <div class="mb-3">
+    <label for="id_file_urls" class="form-label">Uploaded Files:</label>
+    <div>
+        {% if file_urls %}
+            {% for url in file_urls %}
+                {% if ".pdf" in url %}
+                    <embed src="{{ url }}" width="100%" height="600" type="application/pdf">
+                {% else %}
+                    <img src="{{ url }}" style="width:400px; height:auto; margin-bottom: 15px;">
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        {% if file_contents %}
+            {% for content in file_contents %}
+                <pre src="{{ content }}" style="background-color: #eaecef; width: 100%; height: 300px; padding: 15px; overflow-x: hidden; overflow-y: scroll; word-wrap: break-word; white-space: pre-wrap;">{{ content }}</pre>
+            {% endfor %}
+        {% endif %}
+        {% if not file_urls and not file_contents %}
+            <p>No files uploaded</p>
+        {% endif %}
+    </div>
+</div>
+
+        {% if request.session.is_admin %}
+            {% if not report.status == 'Resolved' %}
+                <div class="mb-3">
+                    <label for="id_admin_comment" class="form-label">The resulting action of the submission</label>
+                    <textarea id="id_admin_comment" name="admin_comment" class="form-control">{{ report.admin_comment }}</textarea>
+                </div>
+            {% else %}
+                <div class="mb-3">
+                    <label for="id_admin_comment" class="form-label">The resulting action of the submission</label>
+                    <textarea id="id_admin_comment" name="admin_comment" class="form-control" readonly>{{ report.admin_comment }}</textarea>
+                </div>
+            {% endif %}
+        {% else %}
+                <div class="mb-3">
+                    <label for="id_admin_comment" class="form-label">The resulting action of the submission</label>
+                    <textarea id="id_admin_comment" name="admin_comment" class="form-control" readonly>{{ report.admin_comment }}</textarea>
+                </div>
+        {% endif %}
+
+        {% if request.session.is_admin and not report.status == 'Resolved' %}
+        <button type="submit" class="btn btn-success" method="post">Resolve Report</button>
+        {% endif %}
+
+        <button type="button" class="btn btn-secondary" onclick="redirectToReports();">Back</button>
+    </form>
+</div>
+
+<script>
+    function redirectToReports() {
+        var isAdmin = "{{ request.session.is_admin }}" === "True";
+        
+        var adminURL = "{% url 'admin_pending_reports' %}";
+        var userURL = "{% url 'user_submitted_reports' %}";
+    
+        var redirectTo = isAdmin ? adminURL : userURL;
+        window.location.href = redirectTo;
+    }
+</script>
+
+{% endblock %}

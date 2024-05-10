@@ -1,0 +1,21 @@
+{% extends "feedback/base.html" %}
+
+{% block content %}
+    <h1>Welcome Admin</h1>
+    <h2>S3 Bucket Files</h2>
+    <ul>
+        {% for file in file_urls %}
+            <li>
+                <p>{{ file.name }}</p>
+                {% if ".pdf" in file.url %}
+                    <embed src="{{ file.url }}" width="600" height="400" type="application/pdf">
+                {% else %}
+                    <img src="{{ file.url }}" alt="{{ file.name }}" style="width:100px; height:auto;">
+                {% endif %}
+
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+{% endblock %}

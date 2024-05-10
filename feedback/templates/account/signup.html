@@ -1,0 +1,79 @@
+{% extends "account/base_entrance.html" %}
+{% load allauth i18n %}
+{% load allauth account %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+{% load static %}
+{% load socialaccount %}
+
+{% block head_title %}
+    {% trans "Signup" %}
+{% endblock head_title %}
+
+{% block content %}
+<section class="vh-100" style="background-color: #4a9bf5; overflow-y: scroll;">
+    <div class="container py-5 h-auto">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card shadow-2-strong" style="border-radius: 0.5rem; margin-bottom: 50px;">
+                    <div class="card-body p-5 text-center">
+                        <h3 class="mb-5">{% trans "Sign Up" %}</h3>
+
+                        {% url 'account_signup' as action_url %}
+                        {% element form form=form method="post" action=action_url tags="entrance,signup" %}
+                            {% slot body %}
+                                {% csrf_token %}
+                                <div class="form-fields">
+                                    {% element fields form=form unlabeled=True %}
+                                    {% endelement %}
+                                </div>
+                                {% if redirect_field_value %}
+                                    <input type="hidden"
+                                           name="{{ redirect_field_name }}"
+                                           value="{{ redirect_field_value }}" />
+                                {% endif %}
+                            {% endslot %}
+                            {% slot actions %}
+                                <button type="submit" class="btn btn-primary btn-lg btn-block" style="width: 100%;">{% trans "Sign Up" %}</button>
+                            {% endslot %}
+                        {% endelement %}
+
+                        <div class="divider d-flex align-items-center my-4" style="position: relative; display: flex; align-items: center; margin-top: 1rem; margin-bottom: 1rem;">
+                            <div style="flex: 1; height: 1px; background-color: #6c757d;"></div>
+                            <p class="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
+                            <div style="flex: 1; height: 1px; background-color: #6c757d;"></div>
+                        </div>
+
+                        {% if SOCIALACCOUNT_ENABLED %}
+                        <form action="{% provider_login_url 'google' %}" method="GET">
+                            <button type="submit" class="btn btn-lg btn-block btn-danger" style="width: 100%;"><i class="fab fa-google me-2"></i> {% trans "Sign Up with Google" %}</button>
+                        </form>                        
+                        {% endif %}
+                        
+                        <div class="sign-in">
+                            <div class="message fw-normal" style="display: inline-block;">Already have an account?</div>
+                            <a class="sign-in-anchor fw-bold" href="{{login_url}}" style="color: #508bfc; display: inline-block; margin-top: 35px;">{% trans "Login Here" %}</a>
+                        </div>
+
+                        <style>
+                            .form-fields input[type="text"],
+                            .form-fields input[type="email"],
+                            .form-fields input[type="password"] {
+                                width: 100%;
+                                padding: 10px;
+                                margin-bottom: 10px;
+                                border: 1px solid #ccc;
+                                border-radius: 5px;
+                                box-sizing: border-box;
+                            }                      
+                        </style>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
